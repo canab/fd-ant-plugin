@@ -70,6 +70,12 @@ namespace AntPlugin
             preventExpand = false;
         }
 
+        private void treeView_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            e.Cancel = preventExpand;
+            preventExpand = false;
+        }
+
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
