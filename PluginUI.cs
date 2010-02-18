@@ -120,6 +120,7 @@ namespace AntPlugin
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "BuildFiles (*.xml)|*.XML|" + "All files (*.*)|*.*";
+            dialog.Multiselect = true;
             if (PluginBase.CurrentProject != null)
                 dialog.InitialDirectory = Path.GetDirectoryName(
                     PluginBase.CurrentProject.ProjectPath);
