@@ -1,4 +1,8 @@
-﻿namespace AntPlugin
+﻿using System.Windows.Forms;
+using System;
+using System.Collections.Generic;
+
+namespace AntPlugin
 {
     partial class PluginUI
     {
@@ -6,6 +10,10 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        private String[] dropFiles = null;
+        private bool preventExpand = false;
+        private DateTime lastMouseDown = DateTime.Now;
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -134,6 +142,68 @@
         private System.Windows.Forms.ToolStripButton refreshButton;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ToolStripButton runButton;
+
+        private void treeView_MouseDown(object sender, MouseEventArgs e)
+        {
+            int delta = (int)DateTime.Now.Subtract(lastMouseDown).TotalMilliseconds;
+            preventExpand = (delta < SystemInformation.DoubleClickTime);
+            lastMouseDown = DateTime.Now;
+        }
+
+        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            e.Cancel = preventExpand;
+            preventExpand = false;
+        }
+
+        private void treeView_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            e.Cancel = preventExpand;
+            preventExpand = false;
+        }
+
+        internal void StartDragHandling()
+        {
+            this.treeView.AllowDrop = true;
+            this.treeView.DragEnter += new DragEventHandler(treeView_DragEnter);
+            this.treeView.DragDrop += new DragEventHandler(treeView_DragDrop);
+            this.treeView.DragOver += new DragEventHandler(treeView_DragOver);
+        }
+
+        void treeView_DragEnter(object sender, DragEventArgs e)
+        {
+            String[] s = (String[])e.Data.GetData(DataFormats.FileDrop);
+            List<String> xmls = new List<String>();
+            for (Int32 i = 0; i < s.Length; i++)
+            {
+                if (s[i].EndsWith(".xml", true, null))
+                {
+                    xmls.Add(s[i]);
+                }
+            }
+            if (xmls.Count > 0)
+            {
+                e.Effect = DragDropEffects.Copy;
+                this.dropFiles = xmls.ToArray();
+            }
+            else this.dropFiles = null;
+        }
+
+        void treeView_DragOver(object sender, DragEventArgs e)
+        {
+            if (this.dropFiles != null)
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        void treeView_DragDrop(object sender, DragEventArgs e)
+        {
+            if (this.dropFiles != null)
+            {
+                this.pluginMain.AddBuildFiles(this.dropFiles);
+            }
+        }
 
     }
 }

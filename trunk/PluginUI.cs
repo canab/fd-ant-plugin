@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using FlashDevelop;
 using PluginCore;
-using PluginCore.FRService;
-using PluginCore.Managers;
 using ScintillaNet;
 
 namespace AntPlugin
@@ -26,9 +20,6 @@ namespace AntPlugin
         private PluginMain pluginMain;
         private ContextMenuStrip buildFileMenu;
         private ContextMenuStrip targetMenu;
-        
-        private bool preventExpand = false;
-        private DateTime lastMouseDown = DateTime.Now;
         
         public PluginUI(PluginMain pluginMain)
         {
@@ -55,25 +46,6 @@ namespace AntPlugin
             targetMenu = new ContextMenuStrip();
             targetMenu.Items.Add("Run target", runButton.Image, MenuRunClick);
             targetMenu.Items.Add("Show in Editor", null, MenuEditClick);
-        }
-
-        private void treeView_MouseDown(object sender, MouseEventArgs e)
-        {
-            int delta = (int)DateTime.Now.Subtract(lastMouseDown).TotalMilliseconds;
-            preventExpand = (delta < SystemInformation.DoubleClickTime);
-            lastMouseDown = DateTime.Now;
-        }
-        
-        private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
-        {
-            e.Cancel = preventExpand;
-            preventExpand = false;
-        }
-
-        private void treeView_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
-        {
-            e.Cancel = preventExpand;
-            preventExpand = false;
         }
 
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
