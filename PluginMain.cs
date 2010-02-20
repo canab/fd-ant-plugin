@@ -160,6 +160,7 @@ namespace AntPlugin
         {
             pluginUI = new PluginUI(this);
             pluginUI.Text = "Ant";
+            pluginUI.StartDragHandling();
             pluginPanel = PluginBase.MainForm.CreateDockablePanel(
                 pluginUI, PLUGIN_GUID, pluginImage, DockState.DockRight);
         }
