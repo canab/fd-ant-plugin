@@ -176,7 +176,7 @@ namespace AntPlugin
             
             String arguments = "/c ";
             if (settingObject.AntPath.Length > 0)
-                arguments += "\"" + Path.Combine(settingObject.AntPath, "bin") + "\\ant" + "\"";
+                arguments += Path.Combine(settingObject.AntPath, "bin") + "\\ant";
             else
                 arguments += "ant";
 
