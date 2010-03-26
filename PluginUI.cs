@@ -148,7 +148,16 @@ namespace AntPlugin
             treeView.Nodes.Clear();
             foreach (String file in pluginMain.BuildFilesList)
             {
-                treeView.Nodes.Add(GetBuildFileNode(file));
+                if (File.Exists(file))
+                {
+                    treeView.Nodes.Add(GetBuildFileNode(file));
+                }
+                else
+                {
+                    TreeNode node = new TreeNode(file + " - file not found");
+                    node.ForeColor = Color.Red;
+                    treeView.Nodes.Add(node);
+                }
             }
             treeView.EndUpdate();
         }
@@ -159,8 +168,8 @@ namespace AntPlugin
             xml.Load(file);
 
             XmlAttribute defTargetAttr = xml.DocumentElement.Attributes["default"];
-            String defaultTarget = (defTargetAttr != null)? defTargetAttr.InnerText : "";
-            
+            String defaultTarget = (defTargetAttr != null) ? defTargetAttr.InnerText : "";
+
             XmlAttribute nameAttr = xml.DocumentElement.Attributes["name"];
             String projectName = (nameAttr != null) ? nameAttr.InnerText : file;
 
@@ -168,12 +177,12 @@ namespace AntPlugin
             String description = (descrAttr != null) ? descrAttr.InnerText : "";
 
             if (projectName.Length == 0)
-                projectName = file;
+            projectName = file;
 
-            AntTreeNode buildFileNode = new AntTreeNode(projectName, ICON_FILE);
-            buildFileNode.File = file;
-            buildFileNode.Target = defaultTarget;
-            buildFileNode.ToolTipText = description;
+            AntTreeNode rootNode = new AntTreeNode(projectName, ICON_FILE);
+            rootNode.File = file;
+            rootNode.Target = defaultTarget;
+            rootNode.ToolTipText = description;
 
             XmlNodeList nodes = xml.DocumentElement.ChildNodes;
             int nodeCount = nodes.Count;
@@ -184,12 +193,12 @@ namespace AntPlugin
                 {
                     AntTreeNode targetNode = GetBuildTargetNode(child, defaultTarget);
                     targetNode.File = file;
-                    buildFileNode.Nodes.Add(targetNode);
+                    rootNode.Nodes.Add(targetNode);
                 }
             }
 
-            buildFileNode.Expand();
-            return buildFileNode;
+            rootNode.Expand();
+            return rootNode;
         }
 
         private AntTreeNode GetBuildTargetNode(XmlNode node, string defaultTarget)

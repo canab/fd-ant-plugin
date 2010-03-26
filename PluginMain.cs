@@ -180,7 +180,7 @@ namespace AntPlugin
             else
                 arguments += "ant";
 
-            arguments += " -buildfile " + file + " " + target;
+            arguments += " -buildfile \"" + file + "\" " + target;
             //TraceManager.Add(command + " " + arguments);
             Globals.MainForm.CallCommand("RunProcessCaptured", command + ";" + arguments);
         }
