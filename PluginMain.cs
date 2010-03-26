@@ -181,8 +181,10 @@ namespace AntPlugin
                 arguments += "ant";
 
             arguments += " -buildfile \"" + file + "\" \"" + target + "\"";
-            //TraceManager.Add(command + " " + arguments);
-            Globals.MainForm.CallCommand("RunProcessCaptured", command + ";" + arguments);
+            
+			//TraceManager.Add(command + " " + arguments);
+            
+			Globals.MainForm.CallCommand("RunProcessCaptured", command + ";" + arguments);
         }
 
         public void AddBuildFiles(String[] files)
