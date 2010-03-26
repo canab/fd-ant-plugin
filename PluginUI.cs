@@ -152,12 +152,6 @@ namespace AntPlugin
                 {
                     treeView.Nodes.Add(GetBuildFileNode(file));
                 }
-                else
-                {
-                    TreeNode node = new TreeNode(file + " - file not found");
-                    node.ForeColor = Color.Red;
-                    treeView.Nodes.Add(node);
-                }
             }
             treeView.EndUpdate();
         }
