@@ -15,6 +15,7 @@ namespace AntPlugin
 {
 	public class PluginMain : IPlugin
 	{
+        private const Int32 PLUGIN_API = 1;
         private const String PLUGIN_NAME = "AntPlugin";
         private const String PLUGIN_GUID = "92d9a647-6cd3-4347-9db6-95f324292399";
         private const String PLUGIN_HELP = "www.flashdevelop.org/community/";
@@ -38,6 +39,11 @@ namespace AntPlugin
 
 	    #region Required Properties
 
+        public int Api
+        {
+            get { return PLUGIN_API; }
+        }
+        
         /// <summary>
         /// Name of the plugin
         /// </summary> 
@@ -274,6 +280,7 @@ namespace AntPlugin
         }
 
 		#endregion
-	}
+
+    }
 	
 }
