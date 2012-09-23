@@ -192,7 +192,7 @@ namespace AntPlugin
                         String targetName = targetNameAttr.InnerText;
                         if (!String.IsNullOrEmpty(targetName) && (targetName[0] == '-'))
                         {
-                            break;
+                            continue;
                         }
                     }
 
