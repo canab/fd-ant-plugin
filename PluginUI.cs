@@ -185,6 +185,17 @@ namespace AntPlugin
                 XmlNode child = nodes[i];
                 if (child.Name == "target")
                 {
+                    // skip private targets
+                    XmlAttribute targetNameAttr = child.Attributes["name"];
+                    if (targetNameAttr != null)
+                    {
+                        String targetName = targetNameAttr.InnerText;
+                        if (!String.IsNullOrEmpty(targetName) && (targetName[0] == '-'))
+                        {
+                            break;
+                        }
+                    }
+
                     AntTreeNode targetNode = GetBuildTargetNode(child, defaultTarget);
                     targetNode.File = file;
                     rootNode.Nodes.Add(targetNode);
