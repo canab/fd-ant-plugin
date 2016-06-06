@@ -16,12 +16,12 @@ namespace AntPlugin
 	public class PluginMain : IPlugin
 	{
         private const Int32 PLUGIN_API = 1;
-        private const String PLUGIN_NAME = "AntPlugin";
+        private const String PLUGIN_NAME = "AntPanel";
         private const String PLUGIN_GUID = "92d9a647-6cd3-4347-9db6-95f324292399";
         private const String PLUGIN_HELP = "www.flashdevelop.org/community/";
         private const String PLUGIN_AUTH = "Canab";
 	    private const String SETTINGS_FILE = "Settings.fdb";
-        private const String PLUGIN_DESC = "Ant plugin";
+        private const String PLUGIN_DESC = "Ant Panel";
 
         private const String STORAGE_FILE_NAME = "antPluginData.txt";
         
@@ -185,7 +185,7 @@ namespace AntPlugin
                 arguments += Path.Combine(settingObject.AntPath, "bin") + "\\ant";
             else
                 arguments += "ant";
-
+			if (!string.IsNullOrEmpty(settingObject.AddArgs)) arguments += " " + settingObject.AddArgs;
             arguments += " -buildfile \"" + file + "\" \"" + target + "\"";
             
 			//TraceManager.Add(command + " " + arguments);
